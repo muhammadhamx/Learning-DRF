@@ -2,6 +2,7 @@
 from django.db import models
 import uuid
 from django.contrib.auth.hashers import make_password, check_password
+from .manager import AuthorManager
 
 class Author(models.Model):
     ROLE_CHOICES = (
@@ -24,6 +25,9 @@ class Author(models.Model):
 
     def __str__(self):
         return self.name
+    
+    objects = models.Manager()
+    authors = AuthorManager()
 
 
 class Post(models.Model):

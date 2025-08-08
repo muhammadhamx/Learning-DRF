@@ -5,6 +5,7 @@ from .views import (
     AuthorListCreateView,
     AuthorDetailView,
     LoginView,
+    AuthorFilterView
    # AuthorViewSet,
    # PostViewSet,
    # AuthorWithPostsView,
@@ -35,6 +36,7 @@ urlpatterns = [
     path('login/', LoginView.as_view(), name='login'),
     path('authors/', AuthorListCreateView.as_view(), name='author-list'),
     path('authors/<uuid:pk>/', AuthorDetailView.as_view(), name='author-detail'),
+     path('authors/filter/', AuthorFilterView.as_view(), name='author-filter'),
 
 ]
 

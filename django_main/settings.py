@@ -41,7 +41,7 @@ INSTALLED_APPS = [
     'employee',
     'blog',
     'rest_framework.authtoken',
-    'blog.app.BlogConfig'
+    # '..blog.app.BlogConfig',
 ]
 
 MIDDLEWARE = [

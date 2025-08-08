@@ -4,7 +4,7 @@ from rest_framework.response import Response
 from rest_framework import status,  mixins, permissions, generics
 from .models import Author, Post, AuthToken
 from .serializers import AuthorSerializer, AuthorWritableSerializer
-from rest_framework.generics import ListCreateAPIView, RetrieveUpdateDestroyAPIView
+# from rest_framework.generics import ListCreateAPIView, RetrieveUpdateDestroyAPIView
 from rest_framework.viewsets import ModelViewSet
 from rest_framework.authtoken.models import Token
 import uuid
@@ -121,3 +121,26 @@ class AuthorCreateWithPostsView(APIView):
             return Response(serializer.data, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 '''
+
+
+class AuthorFilterView(generics.ListAPIView):
+    serializer_class = AuthorSerializer
+    
+    def get_queryset(self):
+        queryset = Author.objects.all()
+        role = self.request.query_params.get('role')
+        recent_days = self.request.query_params.get('recent_days')
+        name = self.request.query_params.get('name')
+
+        if role:
+            queryset = Author.authors.by_role(role)
+        if recent_days:
+            try: 
+                days = int(recent_days)
+                queryset = queryset & Author.authors.recent(days=days)
+            except ValueError:
+                pass
+        if name:
+            queryset = queryset & Author.authors.search_name(name)
+
+        return queryset
